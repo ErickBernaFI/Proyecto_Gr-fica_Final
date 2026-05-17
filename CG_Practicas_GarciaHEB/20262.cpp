@@ -1345,9 +1345,7 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Barandal.Draw(staticShader);
 		// Fin Techo ***********************************************************************
-		// Modificaciones de prueba
-		// 
-		// 
+
 		// Pared negra completa
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 114.0f));
 		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
