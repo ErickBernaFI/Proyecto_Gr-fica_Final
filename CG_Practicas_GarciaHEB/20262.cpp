@@ -47,6 +47,7 @@ void animarBot(void);
 void brazoBot(void);
 void animarTren(void);
 void LoadAnimFrames(void);
+void animarMaquinita(void);
 
 //=================Experimento de animacion =================//
 std::vector<unsigned int> animFrames;
@@ -518,7 +519,7 @@ void animarTren()
 
 	if (estado_Tren == 1)	// 1. Avanza hasta Z = 1000
 	{
-		movTren_z += 5.0f;
+		movTren_z += 10.0f;
 
 		if (movTren_z >= 1000.0f)
 		{
@@ -546,7 +547,7 @@ void animarTren()
 
 	else if (estado_Tren == 3)	// 3. Regresa hasta Z = 500
 	{
-		movTren_z -= 3.0f;
+		movTren_z -= 6.0f;
 
 		if (movTren_z <= 500.0f)
 		{
@@ -573,7 +574,7 @@ void animarTren()
 
 	else if (estado_Tren == 5)	// 5. Regresa al origen
 	{
-		movTren_z -= 5.0f;
+		movTren_z -= 6.0f;
 
 		if (movTren_z <= 0.0f)
 		{
@@ -583,7 +584,22 @@ void animarTren()
 		}
 	}
 }
-
+//=========================================================//
+//                 Animar Maquinita
+void animarMaquinita()
+{
+	animTimer += dt;
+	if (animTimer >= animSpeed)
+	{
+		currentFrame++;
+		if (currentFrame >= animFrames.size())
+		{
+			currentFrame = 0;
+			animacionMaquinita = false;
+		}
+		animTimer = 0.0f;
+	}
+}
 
 void animate(void)
 {
@@ -644,7 +660,10 @@ void animate(void)
 	{
 		animarTren();
 	}
-
+	if (animacionMaquinita)
+	{
+		animarMaquinita();
+	}
 	// NPC 2
 	if (npc2anim)
 	{
@@ -1432,14 +1451,44 @@ int main() {
 		Stand_Blanco.Draw(staticShader);
 
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f + 100.0f, 17.0f, Unidad_Z * 9.0f - 60.0f));//(4,9)
-		modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		tmp=modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
 		Maquinita.Draw(staticShader);
+
+		// =====================================================================
+		// Pantalla animada
+		myShader.use();
+
+		myShader.setMat4("projection", projectionOp);
+		myShader.setMat4("view", viewOp);
+
+		// Posición del plano
+		modelOp = glm::translate(tmp, glm::vec3( 42.142f, 123.328f, -31.495f));
+		// Rotación
+		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		// Escala real
+		modelOp = glm::scale(modelOp,glm::vec3(42.069f, 32.726f ,1.0f));
+
+		myShader.setMat4("model", modelOp);
+
+		myShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+
+		// Activar textura animada
+		glBindTexture(GL_TEXTURE_2D, animFrames[currentFrame]);
+
+		// Dibujar plano
+		glBindVertexArray(VAO[0]);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
+		staticShader.use();
+		staticShader.setMat4("projection", projectionOp);
+		staticShader.setMat4("view", viewOp);
 		//modelOp = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(movAuto_x - 150.0f, -1.0f, movAuto_z + 150.0f));
 		tmp = modelOp = glm::rotate(modelOp, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1851,7 +1900,7 @@ void LoadAnimFrames()
     for (int i = 1; i <= 141; i++)
     {
         std::string path =
-            "Texturas/Asteroids/" + std::to_string(i) + ".png";
+            "Texturas/Asteroids/text_" + std::to_string(i) + ".png";
 
         animFrames.push_back(
             generateTextures(path.c_str(), 1, true)
