@@ -34,6 +34,8 @@
 #include <mmsystem.h>
 
 #include <miniaudio.h>
+#include <vector>
+#include <string>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -44,6 +46,17 @@ void animate(void);
 void animarBot(void);
 void brazoBot(void);
 void animarTren(void);
+
+//Experimento de animacion
+std::vector<unsigned int> animFrames;
+
+int currentFrame = 0;
+
+float animTimer = 0.0f;
+float animFPS = 8.0f;
+
+// tiempo entre frames
+float animSpeed = 1.0f / animFPS;
 
 //Para audio
 ma_engine engine;
@@ -1058,6 +1071,8 @@ int main() {
 	Model Stand_Blanco("resources/objects/Stand_Blanco/Stand_Blanco.obj");
 	Model Mesa("resources/objects/Stand_Blanco/Mesa/Mesa.obj");
 
+	Model Maquinita("resources/objects/Maquinita/Maquinita.obj");
+
 
 
 	Model Puerta_Reja("resources/objects/Puerta_Reja/Puerta_Reja.obj");
@@ -1409,6 +1424,11 @@ int main() {
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f + 100.0f, 17.0f, Unidad_Z * 9.0f - 50.0f));//(4,9)
 		staticShader.setMat4("model", modelOp);
 		Stand_Blanco.Draw(staticShader);
+
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f + 100.0f, 17.0f, Unidad_Z * 9.0f - 60.0f));//(4,9)
+		modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		Maquinita.Draw(staticShader);
 
 
 		// -------------------------------------------------------------------------------------------------------------------------
