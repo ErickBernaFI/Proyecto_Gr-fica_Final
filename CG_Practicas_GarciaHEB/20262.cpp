@@ -46,15 +46,17 @@ void animate(void);
 void animarBot(void);
 void brazoBot(void);
 void animarTren(void);
+void LoadAnimFrames(void);
 
-//Experimento de animacion
+//=================Experimento de animacion =================//
 std::vector<unsigned int> animFrames;
 
 int currentFrame = 0;
 
 float animTimer = 0.0f;
 float animFPS = 8.0f;
-
+boolean animacionMaquinita = false;
+//=============== FIN Experimento de animacion ===============//
 // tiempo entre frames
 float animSpeed = 1.0f / animFPS;
 
@@ -85,6 +87,7 @@ lastFrame = 0.0f;
 void getResolution(void);
 void myData(void);							// De la practica 4
 void LoadTextures(void);					// De la práctica 6
+
 unsigned int generateTextures(char*, bool, bool);	// De la práctica 6
 
 //For Keyboard
@@ -994,7 +997,10 @@ int main() {
 	// -----------------------------
 	//Mis funciones
 	//Datos a utilizar
+	LoadAnimFrames();
 	LoadTextures();
+
+
 	myData();
 	glEnable(GL_DEPTH_TEST);
 
@@ -1762,9 +1768,12 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacionTren ^= true;
 	}
-	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
 		animacionBot ^= true;
 	}
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		animacionMaquinita ^= true;
+	}	
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
@@ -1835,4 +1844,17 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	camera.ProcessMouseScroll(yoffset);
+}
+
+void LoadAnimFrames()
+{
+    for (int i = 1; i <= 141; i++)
+    {
+        std::string path =
+            "Texturas/Asteroids/" + std::to_string(i) + ".png";
+
+        animFrames.push_back(
+            generateTextures(path.c_str(), 1, true)
+        );
+    }
 }
