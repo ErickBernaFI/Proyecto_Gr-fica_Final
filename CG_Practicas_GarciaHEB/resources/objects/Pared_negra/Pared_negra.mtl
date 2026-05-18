@@ -12,5 +12,5 @@ newmtl 02___Default
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\garci\OneDrive\Documentos\3ds Max 2025\sceneassets\images\piedra_V_Blanco.png
-	map_Kd C:\Users\garci\OneDrive\Documentos\3ds Max 2025\sceneassets\images\piedra_V_Blanco.png
+	map_Ka piedra_V_Blanco.png
+	map_Kd piedra_V_Blanco.png
