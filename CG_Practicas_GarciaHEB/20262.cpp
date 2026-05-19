@@ -324,6 +324,18 @@ void LoadTextures()
 	//This must be the last
 	t_white = generateTextures("Texturas/white.jpg", 0, false);
 }
+void LoadAnimFrames()
+{
+	for (int i = 1; i < 142; i++)
+	{
+		std::string path =
+			"Texturas/Asteroids/text_" + std::to_string(i) + ".png";
+
+		animFrames.push_back(
+			generateTextures(path.c_str(), 1, true)
+		);
+	}
+}
 
 
 //=========================================================//
@@ -660,10 +672,10 @@ void animate(void)
 	{
 		animarTren();
 	}
-	if (animacionMaquinita)
-	{
+	//if (animacionMaquinita)
+	//{
 		animarMaquinita();
-	}
+	//}
 	// NPC 2
 	if (npc2anim)
 	{
@@ -1018,6 +1030,7 @@ int main() {
 	//Datos a utilizar
 	LoadAnimFrames();
 	LoadTextures();
+	std::cout << animFrames.size() << std::endl;
 
 	// Este comentario es de otra rama
 	myData();
@@ -1223,16 +1236,16 @@ int main() {
 		staticShader.setFloat("pointLight[1].linear", 0.009f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.032f);
 
-		staticShader.setVec3("spotLight[0].position", glm::vec3(0.0f, 20.0f, 10.0f));
-		staticShader.setVec3("spotLight[0].direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		staticShader.setVec3("spotLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("spotLight[0].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("spotLight[0].position", glm::vec3(camera.Position.x, camera.Position.y, camera.Position.z));
+		staticShader.setVec3("spotLight[0].direction", glm::vec3(camera.Front.x, camera.Front.y, camera.Front.z));
+		staticShader.setVec3("spotLight[0].ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+		staticShader.setVec3("spotLight[0].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setVec3("spotLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setFloat("spotLight[0].cutOff", glm::cos(glm::radians(10.0f)));
-		staticShader.setFloat("spotLight[0].outerCutOff", glm::cos(glm::radians(60.0f)));
+		staticShader.setFloat("spotLight[0].cutOff", glm::cos(glm::radians(30.0f)));
+		staticShader.setFloat("spotLight[0].outerCutOff", glm::cos(glm::radians(45.0f)));
 		staticShader.setFloat("spotLight[0].constant", 1.0f);
-		staticShader.setFloat("spotLight[0].linear", 0.0009f);
-		staticShader.setFloat("spotLight[0].quadratic", 0.0005f);
+		staticShader.setFloat("spotLight[0].linear", 0.00005f);
+		staticShader.setFloat("spotLight[0].quadratic", 0.000001f);
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
@@ -1895,15 +1908,3 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	camera.ProcessMouseScroll(yoffset);
 }
 
-void LoadAnimFrames()
-{
-    for (int i = 1; i <= 141; i++)
-    {
-        std::string path =
-            "Texturas/Asteroids/text_" + std::to_string(i) + ".png";
-
-        animFrames.push_back(
-            generateTextures(path.c_str(), 1, true)
-        );
-    }
-}
