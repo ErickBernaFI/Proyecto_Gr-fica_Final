@@ -1183,7 +1183,7 @@ int main() {
 	KeyFrame[14] = { 1776.0f, 0.0f, 170.0f,  90.0f };
 	KeyFrame[15] = { 1952.0f, 0.1f, 170.0f,  90.0f };
 
-	FrameIndex = 12;
+	FrameIndex = 16;
 
 	// create transformations and Projection
 	glm::mat4 modelOp = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
