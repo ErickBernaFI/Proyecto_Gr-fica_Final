@@ -55,7 +55,7 @@ std::vector<unsigned int> animFrames;
 int currentFrame = 0;
 
 float animTimer = 0.0f;
-float animFPS = 8.0f;
+float animFPS = 5.0f;
 boolean animacionMaquinita = false;
 //=============== FIN Experimento de animacion ===============//
 // tiempo entre frames
@@ -321,6 +321,7 @@ void LoadTextures()
 	t_toalla = generateTextures("Texturas/toalla.tga", 0, true);
 	t_unam = generateTextures("Texturas/escudo_unam.jpg", 0, true);
 	t_ladrillos = generateTextures("Texturas/bricks.jpg", 0, true);
+	LoadAnimFrames();
 	//This must be the last
 	t_white = generateTextures("Texturas/white.jpg", 0, false);
 }
@@ -329,10 +330,11 @@ void LoadAnimFrames()
 	for (int i = 1; i < 142; i++)
 	{
 		std::string path =
-			"Texturas/Asteroids/text_" + std::to_string(i) + ".png";
-
+			"Texturas/Asteroids/text_" + std::to_string(i) + ".jpg";
+		std::cout << "Cargando textura: "
+			<< path << std::endl;
 		animFrames.push_back(
-			generateTextures(path.c_str(), 1, true)
+			generateTextures(path.c_str(), 0, true)
 		);
 	}
 }
@@ -672,10 +674,10 @@ void animate(void)
 	{
 		animarTren();
 	}
-	//if (animacionMaquinita)
-	//{
+	if (animacionMaquinita)
+	{
 		animarMaquinita();
-	//}
+	}
 	// NPC 2
 	if (npc2anim)
 	{
@@ -872,10 +874,10 @@ void getResolution() {
 void myData() {
 	float vertices[] = {
 		// positions          // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+		 0.5f,  0.5f, 0.0f,   0.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f  // top left
 	};
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -1028,7 +1030,6 @@ int main() {
 	// -----------------------------
 	//Mis funciones
 	//Datos a utilizar
-	LoadAnimFrames();
 	LoadTextures();
 	std::cout << animFrames.size() << std::endl;
 
@@ -1119,8 +1120,8 @@ int main() {
 	//Bicicleta
 	Model Bici_Cuerpo("resources/objects/Bici/Bici_Cuerpo/Bici_cuerpo.obj");
 	Model Bici_Rueda("resources/objects/Bici/Rueda/Rueda.obj");
-	Model Bici_Pedal_Izq("resources/objects/Bici/Pedal_Der/Pedal_Der.obj");
-	Model Bici_Pedal_Der("resources/objects/Bici/Columna_Eliptica/Columna_Eliptica.obj");
+	Model Bici_Pedal_Izq("resources/objects/Bici/Pedal_Izq/Pedal_Izq.obj");
+	Model Bici_Pedal_Der("resources/objects/Bici/Pedal_Der/Pedal_Der.obj");
 	Model Bici_Base_Pedal_Izq("resources/objects/Bici/Base_Pedal_Izq/Base_Pedal_Izq.obj");
 	Model Bici_Base_Pedal_Der("resources/objects/Bici/Base_Pedal_Der/Base_Pedal_Der.obj");
 	//Fin bicicleta
@@ -1128,7 +1129,6 @@ int main() {
 	Model BotBrazoDer("resources/objects/BOT/BotBrazoDer/BotBrazoDer.obj");
 	Model BotBrazoIzq("resources/objects/BOT/BotBrazoIzq/BotBrazoIzq.obj");
 	Model BotCentro("resources/objects/BOT/BotCentro/BotCentro.obj");
-	Model BotBolita("resources/objects/BOT/BotBolita/BotBolita.obj");
 	// FINBOT
 
 	// Trenecito
@@ -1444,17 +1444,7 @@ int main() {
 		modelOp = glm::rotate(modelOp, glm::radians(-giroBrazo_Bot), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
 		BotBrazoIzq.Draw(staticShader);
-		/*
-		modelOp = glm::translate(tmp, glm::vec3(2.2f, 0.085f, 0.0f));
-		modelOp = glm::rotate(modelOp, glm::radians(giroBola_Bot), glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setMat4("model", modelOp);
-		BotBolita.Draw(staticShader);
 
-		modelOp = glm::translate(tmp, glm::vec3(-2.2f, 0.085f, 0.0f));
-		modelOp = glm::rotate(modelOp, glm::radians(giroBola_Bot), glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setMat4("model", modelOp);
-		BotBolita.Draw(staticShader);
-		*/
 
 
 
@@ -1476,7 +1466,7 @@ int main() {
 		myShader.setMat4("view", viewOp);
 
 		// Posición del plano
-		modelOp = glm::translate(tmp, glm::vec3( 42.142f, 123.328f, -31.495f));
+		modelOp = glm::translate(tmp, glm::vec3( 40.142f, 125.0f, -31.495f));
 		// Rotación
 		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelOp = glm::rotate(modelOp, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1594,7 +1584,7 @@ int main() {
 		modelOp = glm::rotate(modelOp, glm::radians(giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(1.5f));
 		staticShader.setMat4("model", modelOp);
-		Bici_Pedal_Izq.Draw(staticShader);
+		Bici_Pedal_Der.Draw(staticShader);
 
 		modelOp = glm::translate(tmp_Bici, glm::vec3(-4.993f * EscalaBici, 12.77f * EscalaBici, 3.343f * EscalaBici));
 		modelOp = glm::scale(modelOp, glm::vec3(EscalaBici));
