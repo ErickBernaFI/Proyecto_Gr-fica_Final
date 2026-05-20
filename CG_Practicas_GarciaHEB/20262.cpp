@@ -1285,7 +1285,7 @@ int main() {
 
 	Model Plataforma_B("resources/objects/Plataforma_B/Plataforma_B.obj");
 	Model Pared_negra("resources/objects/Pared_negra/Pared_negra.obj");
-	//Stand y mesa
+	//Stand  y mesa
 	Model Stand_Blanco("resources/objects/Stand_Blanco/Stand_Blanco.obj");
 	Model Mesa("resources/objects/Stand_Blanco/Mesa/Mesa.obj");
 
@@ -1313,6 +1313,13 @@ int main() {
 	// Trenecito
 	Model Trenecito("resources/objects/Trenecito/Trenecito.obj");
 	Model Rieles("resources/objects/Trenecito/Rieles/Rieles.obj");
+	//Dardos animados
+	Model DardoRojo("resources/objects/Dardos/DardoRojo.obj");
+	Model DardoAzul("resources/objects/Dardos/DardoAzul.obj");
+	Model Tarjet("resources/objects/Dardos/Tarjet/tarjet.obj");
+	
+	// fin dardos
+
 
 	// Avion
 	Model Plane("resources/objects/Plane/Plane.obj");
@@ -1643,6 +1650,26 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Maquinita.Draw(staticShader);
 
+		//Stand 3
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f - 300.0f, 17.0f, Unidad_Z * 9.0f - 50.0f));//(4,9)
+		staticShader.setMat4("model", modelOp);
+		Stand_Blanco.Draw(staticShader);
+			// Dardos animados
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f - 300.0f, 104.0f, Unidad_Z * 9.0f - 100.0f));//(4,9)
+		tmp =modelOp = glm::scale(modelOp, glm::vec3(2.0f));
+		staticShader.setMat4("model", modelOp);
+		Tarjet.Draw(staticShader);
+			// Fin Dardos
+		modelOp = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));//(4,9)
+		//modelOp = glm::scale(modelOp, glm::vec3(2.0f));
+		staticShader.setMat4("model", modelOp);
+		DardoRojo.Draw(staticShader);
+
+		modelOp = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));//(4,9)
+		//modelOp = glm::scale(modelOp, glm::vec3(2.0f));
+		staticShader.setMat4("model", modelOp);
+		DardoAzul.Draw(staticShader);
+
 		// =====================================================================
 		// Pantalla animada
 		myShader.use();
@@ -1706,6 +1733,8 @@ int main() {
 		modelOp = glm::scale(modelOp, glm::vec3(0.5f));
 		staticShader.setMat4("model", modelOp);
 		llanta.Draw(staticShader);	//Izq trase
+
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro de puma seguridad
 		// -------------------------------------------------------------------------------------------------------------------------
