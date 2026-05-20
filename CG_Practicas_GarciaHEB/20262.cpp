@@ -187,10 +187,20 @@ float npc2r = 0.0f;
 bool npc2anim = true;
 
 int npc3 = 0;
+int plane = 0;
+float PlaneX = 0.0f;
+float PlaneY = 0.0f;
+float PlaneZ= 0.0f;
+float PlaneRotX = 0.0f;
+float PlaneRotY = 0.0f;
+float PlaneRotZ = 0.0f;
+float RotHelix = 0.0f;
+
 float npc3x = 0.0f;
 float npc3z = 0.0f;
 float npc3r = 0.0f;
 bool npc3anim = true;
+bool PlaneAnim = true;
 
 //Unidad cuadro Negro
 float   Unidad_X = 244.0f,
@@ -863,6 +873,175 @@ void animate(void)
 
 		}
 	}
+
+
+	// Plane
+	if (PlaneAnim)
+	{
+		RotHelix += 25.0f;
+
+		if (RotHelix >= 360.0f)
+		{
+			RotHelix = 0.0f;
+		}
+
+		switch (plane)
+		{
+
+		case 0:
+			PlaneX = 976.0f;
+			PlaneY = 150.0f;
+			PlaneZ = 1870.0f;
+
+			PlaneRotX = -30.0f;
+			PlaneRotY = 180.0f;
+			PlaneRotZ = -20.0f;
+
+			plane = 1;
+			break;
+
+		case 1:
+
+			PlaneY -= 0.2f;
+			PlaneZ -= 2.5f;
+
+			PlaneRotX = -20.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = 30.0f;
+
+			if (PlaneZ <= 1360.0f)
+			{
+				plane = 2;
+			}
+			break;
+
+		case 2:
+
+			PlaneX += 2.5f;
+			PlaneY += 0.15f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 0.0f;
+			PlaneRotZ = 225.0f;
+
+			if (PlaneX >= 1708.0f)
+			{
+				plane = 3;
+			}
+			break;
+
+		case 3:
+
+			PlaneY -= 0.35f;
+			PlaneZ += 2.5f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 270.0f;
+			PlaneRotZ = 0.0f;
+
+			if (PlaneZ >= 2040.0f)
+			{
+				plane = 4;
+			}
+			break;
+
+		case 4:
+
+			PlaneX -= 2.0f;
+			PlaneY += 0.15f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = -45.0f;
+
+			if (PlaneX <= 1500.0f)
+			{
+				plane = 5;
+			}
+			break;
+
+		case 5:
+
+			PlaneX += 2.0f;
+			PlaneY += 0.15f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = -135.0f;
+
+			if (PlaneX >= 1708.0f)
+			{
+				plane = 6;
+			}
+			break;
+
+		case 6:
+
+			PlaneX += 2.0f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = 90.0f;
+
+			if (PlaneX >= 1952.0f)
+			{
+				plane = 7;
+			}
+			break;
+
+		case 7:
+
+			PlaneY += 0.15f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = 45.0f;
+
+			if (PlaneY >= 125.0f)
+			{
+				plane = 8;
+			}
+			break;
+
+		case 8:
+
+			PlaneY += 0.15f;
+
+			PlaneRotX = 0.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = 0.0f;
+
+			if (PlaneY >= 150.0f)
+			{
+				plane = 9;
+			}
+			break;
+
+		case 9:
+
+			PlaneX -= 2.5f;
+			PlaneZ -= 0.5f;
+
+			PlaneRotX = -30.0f;
+			PlaneRotY = 180.0f;
+			PlaneRotZ = -20.0f;
+
+			if (PlaneX <= 976.0f)
+			{
+				PlaneX = 976.0f;
+				PlaneY = 150.0f;
+				PlaneZ = 1870.0f;
+
+				PlaneRotX = -30.0f;
+				PlaneRotY = 180.0f;
+				PlaneRotZ = -20.0f;
+
+				plane = 1;
+			}
+			break;
+		}
+	}
+
 }
 
 void getResolution() {
@@ -1134,6 +1313,12 @@ int main() {
 	// Trenecito
 	Model Trenecito("resources/objects/Trenecito/Trenecito.obj");
 	Model Rieles("resources/objects/Trenecito/Rieles/Rieles.obj");
+
+	// Avion
+	Model Plane("resources/objects/Plane/Plane.obj");
+	Model Helix("resources/objects/Plane/Helix.obj");
+
+
 	//Animados
 	// 
 	//ModelAnim animacionPersonaje("resources/objects/Personaje1/Arm.dae");
@@ -1613,7 +1798,21 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Rieles.Draw(staticShader);
 
+		// Plane
+		glm::mat4 tempPlane = glm::mat4(1.0f);
 
+		//modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(2300.0f, 150.0f, 1700.0f));
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(PlaneX, PlaneY, PlaneZ));
+		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(-180.0f), glm::vec3(PlaneRotX, PlaneRotY, PlaneRotZ));
+		modelOp = glm::scale(modelOp, glm::vec3(10.0f));
+		staticShader.setMat4("model", modelOp);
+		Plane.Draw(staticShader);
+
+		modelOp = glm::translate(tempPlane, glm::vec3(0.0f, 20.25f, 36.48f));
+		modelOp = glm::rotate(modelOp, glm::radians(RotHelix), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(10.0f));
+		staticShader.setMat4("model", modelOp);
+		Helix.Draw(staticShader);
 
 		//Lo ultimo que se dibuja es aquello que es transparente
 
