@@ -1490,7 +1490,7 @@ int main() {
 
 	// Avion
 	Model Plane("resources/objects/Plane/Plane.obj");
-	Model Helix("resources/objects/Plane/Helix.obj");
+	Model Helix("resources/objects/Plane/Helix/Helix.obj");
 
 
 	//Animados
@@ -2003,6 +2003,7 @@ int main() {
 
 		// Plane
 		glm::mat4 tempPlane = glm::mat4(1.0f);
+
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(PlaneX, PlaneY, PlaneZ));
 		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(PlaneRotX), glm::vec3(1.0f, 0.0f, 0.0f));
 		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(PlaneRotY), glm::vec3(0.0f, 1.0f, 0.0f));
