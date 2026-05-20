@@ -1030,25 +1030,25 @@ void animate(void)
 		case 0:
 			PlaneX = 976.0f;
 			PlaneY = 150.0f;
-			PlaneZ = 1870.0f;
+			PlaneZ = 170.0f;
 
-			PlaneRotX = -30.0f;
-			PlaneRotY = 180.0f;
-			PlaneRotZ = -20.0f;
+			PlaneRotX = 0.0f;
+			PlaneRotY = 0.0f;
+			PlaneRotZ = 0.0f;
 
 			plane = 1;
 			break;
 
 		case 1:
 
-			PlaneY -= 0.2f;
-			PlaneZ -= 2.5f;
+			PlaneY -= 0.7f;
+			PlaneZ += 2.5f;
 
-			PlaneRotX = -20.0f;
-			PlaneRotY = 90.0f;
-			PlaneRotZ = 30.0f;
+			PlaneRotX = 30.0f;
+			PlaneRotY = 0.0f;
+			PlaneRotZ = 0.0f;
 
-			if (PlaneZ <= 1360.0f)
+			if (PlaneZ >= 340.0f)
 			{
 				plane = 2;
 			}
@@ -1056,14 +1056,14 @@ void animate(void)
 
 		case 2:
 
-			PlaneX += 2.5f;
-			PlaneY += 0.15f;
+			PlaneY += 0.7f;
+			PlaneZ += 2.5f;
 
-			PlaneRotX = 0.0f;
+			PlaneRotX = -30.0f;
 			PlaneRotY = 0.0f;
-			PlaneRotZ = 225.0f;
+			PlaneRotZ = 0.0f;
 
-			if (PlaneX >= 1708.0f)
+			if (PlaneZ >= 510.0f)
 			{
 				plane = 3;
 			}
@@ -1071,14 +1071,14 @@ void animate(void)
 
 		case 3:
 
-			PlaneY -= 0.35f;
-			PlaneZ += 2.5f;
+			PlaneX += 1.5f;
+			PlaneZ += 1.0f;
 
-			PlaneRotX = 0.0f;
-			PlaneRotY = 270.0f;
-			PlaneRotZ = 0.0f;
+			PlaneRotX = -20.0f;
+			PlaneRotY = 45.0f;
+			PlaneRotZ = 20.0f;
 
-			if (PlaneZ >= 2040.0f)
+			if (PlaneX >= 1220.0f)
 			{
 				plane = 4;
 			}
@@ -1086,14 +1086,14 @@ void animate(void)
 
 		case 4:
 
-			PlaneX -= 2.0f;
-			PlaneY += 0.15f;
+			PlaneX += 2.5f;
+			PlaneY -= 0.7f;
 
-			PlaneRotX = 0.0f;
+			PlaneRotX = -35.0f;
 			PlaneRotY = 90.0f;
-			PlaneRotZ = -45.0f;
+			PlaneRotZ = 30.0f;
 
-			if (PlaneX <= 1500.0f)
+			if (PlaneX >= 1500.0f)
 			{
 				plane = 5;
 			}
@@ -1101,14 +1101,14 @@ void animate(void)
 
 		case 5:
 
-			PlaneX += 2.0f;
-			PlaneY += 0.15f;
+			PlaneZ -= 2.0f;
+			PlaneY += 0.7f;
 
-			PlaneRotX = 0.0f;
-			PlaneRotY = 90.0f;
-			PlaneRotZ = -135.0f;
+			PlaneRotX = 30.0f;
+			PlaneRotY = 180.0f;
+			PlaneRotZ = 0.0f;
 
-			if (PlaneX >= 1708.0f)
+			if (PlaneZ <= 170.0f)
 			{
 				plane = 6;
 			}
@@ -1116,13 +1116,13 @@ void animate(void)
 
 		case 6:
 
-			PlaneX += 2.0f;
+			PlaneX -= 2.0f;
 
-			PlaneRotX = 0.0f;
-			PlaneRotY = 90.0f;
-			PlaneRotZ = 90.0f;
+			PlaneRotX = 45.0f;
+			PlaneRotY = 270.0f;
+			PlaneRotZ = 0.0f;
 
-			if (PlaneX >= 1952.0f)
+			if (PlaneX <= 1220.0f)
 			{
 				plane = 7;
 			}
@@ -1130,27 +1130,30 @@ void animate(void)
 
 		case 7:
 
-			PlaneY += 0.15f;
+			PlaneX -= 1.5f;
+			PlaneY -= 0.5f;
+			PlaneZ += 1.0f;
 
-			PlaneRotX = 0.0f;
-			PlaneRotY = 90.0f;
-			PlaneRotZ = 45.0f;
+			PlaneRotX = 37.0f;
+			PlaneRotY = 315.0f;
+			PlaneRotZ = -37.0f;
 
-			if (PlaneY >= 125.0f)
+			if (PlaneX <= 976.0f)
 			{
-				plane = 8;
+				plane = 10;
 			}
 			break;
 
 		case 8:
 
-			PlaneY += 0.15f;
+			PlaneX -= 1.5f;
+			PlaneZ -= 1.0f;
 
 			PlaneRotX = 0.0f;
-			PlaneRotY = 90.0f;
+			PlaneRotY = 225.0f;
 			PlaneRotZ = 0.0f;
 
-			if (PlaneY >= 150.0f)
+			if (PlaneX <= 244.0f)
 			{
 				plane = 9;
 			}
@@ -1158,27 +1161,51 @@ void animate(void)
 
 		case 9:
 
-			PlaneX -= 2.5f;
-			PlaneZ -= 0.5f;
+			PlaneX += 1.5f;
+			PlaneZ -= 1.0f;
 
-			PlaneRotX = -30.0f;
-			PlaneRotY = 180.0f;
-			PlaneRotZ = -20.0f;
+			PlaneRotX = 0.0f;
+			PlaneRotY = 135.0f;
+			PlaneRotZ = 0.0f;
 
-			if (PlaneX <= 976.0f)
+			if (PlaneZ <= 170.0f)
 			{
-				PlaneX = 976.0f;
+				plane = 11;
+			}
+			break;
+
+		case 10:
+
+			PlaneX -= 1.5f;
+			PlaneY += 0.2f;
+			PlaneZ += 2.0f;
+
+			PlaneRotX = -37.0f;
+			PlaneRotY = 315.0f;
+			PlaneRotZ = 37.0f;
+
+			if (PlaneZ >= 850.0f)
+			{
+				plane = 8;
+			}
+			break;
+
+		case 11:
+
+			PlaneX += 1.5f;
+
+			PlaneRotX = 45.0f;
+			PlaneRotY = 90.0f;
+			PlaneRotZ = 0.0f;
+
+			if (PlaneX >= 976.0f)
+			{
 				PlaneY = 150.0f;
-				PlaneZ = 1870.0f;
-
-				PlaneRotX = -30.0f;
-				PlaneRotY = 180.0f;
-				PlaneRotZ = -20.0f;
-
 				plane = 1;
 			}
 			break;
 		}
+
 	}
 
 }
@@ -1365,7 +1392,7 @@ int main() {
 
 	if (ma_sound_init_from_file(
 		&engine,
-		"Bilewater.flac",
+		"Sparrow.mp3",
 		MA_SOUND_FLAG_STREAM,
 		NULL,
 		NULL,
@@ -1976,10 +2003,10 @@ int main() {
 
 		// Plane
 		glm::mat4 tempPlane = glm::mat4(1.0f);
-
-		//modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(2300.0f, 150.0f, 1700.0f));
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(PlaneX, PlaneY, PlaneZ));
-		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(-180.0f), glm::vec3(PlaneRotX, PlaneRotY, PlaneRotZ));
+		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(PlaneRotX), glm::vec3(1.0f, 0.0f, 0.0f));
+		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(PlaneRotY), glm::vec3(0.0f, 1.0f, 0.0f));
+		tempPlane = modelOp = glm::rotate(modelOp, glm::radians(PlaneRotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(10.0f));
 		staticShader.setMat4("model", modelOp);
 		Plane.Draw(staticShader);
@@ -1990,7 +2017,7 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Helix.Draw(staticShader);
 
-		//Lo ultimo que se dibuja es aquello que es transparente
+		/*/Lo ultimo que se dibuja es aquello que es transparente
 
 		glEnable(GL_BLEND); //Caro computacionalmente
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1998,7 +2025,7 @@ int main() {
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 15.0f, 50.0f));
 		//modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
-		Cubo_papel.Draw(staticShader);
+		Cubo_papel.Draw(staticShader);*/
 
 		// Trenecito
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(movTren_x + 11 * Unidad_X, 130.0f + movTren_y, movTren_z + Unidad_Z));
