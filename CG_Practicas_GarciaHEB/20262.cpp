@@ -48,6 +48,36 @@ void brazoBot(void);
 void animarTren(void);
 void LoadAnimFrames(void);
 void animarMaquinita(void);
+void iniciarDardos(void);
+//void animarDardos(void);
+
+//Unidades Generales para coordenadas de piso
+//Unidad cuadro Negro
+float   Unidad_X = 244.0f,
+Unidad_Z = 170.0f;
+
+//================= Para Animacion Dardos =================//
+bool animacionDardos = false;
+
+glm::vec3 posDardos[6];
+
+glm::vec3 destinoDardos[6];
+
+int dardoActual = 0;
+
+float velocidadDardo = 0.015f;
+
+float progresoDardo = 0.0f;
+
+glm::vec3 inicioDardos(Unidad_X * 4.0f - 300.0f,104.0f, Unidad_Z * 9.0f - 300.0f
+);
+float radio = 28.0f;
+
+/// Por si lo hacemos con destinos random
+//
+float Destinox = ((rand() % 100) / 100.0f) * radio * 2 - radio;
+float Destinoy = ((rand() % 100) / 100.0f) * radio * 2 - radio;
+//================== Fin dardos ====================//
 
 //=================Experimento de animacion =================//
 std::vector<unsigned int> animFrames;
@@ -159,7 +189,7 @@ float inicioTren_Y = 0.0f;
 float inicioTren_Z = 0.0f;
 
 //==================================================//
-
+float GiroBici = 0.0f;
 
 //Lighting
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
@@ -202,9 +232,7 @@ float npc3r = 0.0f;
 bool npc3anim = true;
 bool PlaneAnim = true;
 
-//Unidad cuadro Negro
-float   Unidad_X = 244.0f,
-Unidad_Z = 170.0f;
+
 
 
 //Keyframes (Manipulación y dibujo)
@@ -252,6 +280,81 @@ bool play = false;
 bool walk1 = false;
 bool walk2 = true;
 int playIndex = 0;
+
+struct Dart
+{
+	glm::vec3 inicio;
+	glm::vec3 destino;
+	glm::vec3 posicionActual;
+
+	bool activo;
+	bool clavado;
+
+	float t;
+
+	int color; // 0 rojo, 1 azul
+};
+
+Dart dardos[6];
+/*
+0 rojo
+1 azul
+2 rojo
+3 azul
+4 rojo
+5 azul (centro)*/
+void iniciarDardos()
+{
+	// posiciones iniciales
+	for (int i = 0; i < 6; i++)
+	{
+		posDardos[i] = inicioDardos;
+	}
+
+	// destinos
+
+	destinoDardos[0] = glm::vec3(
+		inicioDardos.x - 18.0f,
+		inicioDardos.y + 25.0f,
+		inicioDardos.z + 200.0f
+	);
+
+	destinoDardos[1] = glm::vec3(
+		inicioDardos.x + 27.0f,
+		inicioDardos.y - 13.0f,
+		inicioDardos.z + 200.0f
+	);
+
+	destinoDardos[2] = glm::vec3(
+		inicioDardos.x - 5.0f,
+		inicioDardos.y - 18.0f,
+		inicioDardos.z + 200.0f
+	);
+
+	destinoDardos[3] = glm::vec3(
+		inicioDardos.x + 9.0f,
+		inicioDardos.y + 2.0f,
+		inicioDardos.z + 200.0f
+	);
+
+	destinoDardos[4] = glm::vec3(
+		inicioDardos.x - 1.0f,
+		inicioDardos.y + 11.0f,
+		inicioDardos.z + 200.0f
+	);
+
+	// último al centro
+	destinoDardos[5] = glm::vec3(
+		inicioDardos.x,
+		inicioDardos.y,
+		inicioDardos.z + 200.0f
+	);
+
+	dardoActual = 0;
+
+	progresoDardo = 0.0f;
+}
+
 
 void saveFrame(void)
 {
@@ -625,6 +728,35 @@ void animarMaquinita()
 	}
 }
 
+// ==================== Animación Dardos ====================//
+void animarDardos()
+{
+	if (dardoActual >= 6)
+	{
+		animacionDardos = false;
+	}
+	else {
+
+		progresoDardo += velocidadDardo;
+
+		posDardos[dardoActual] = glm::mix(
+			inicioDardos,
+			destinoDardos[dardoActual],
+			progresoDardo
+		);
+
+		if (progresoDardo >= 1.0f)
+		{
+			progresoDardo = 0.0f;
+
+			dardoActual++;
+		}
+	}
+}
+
+
+// ==================== Animación General ====================//
+
 void animate(void)
 {
 	if (puerta)
@@ -635,7 +767,11 @@ void animate(void)
 			puerta = false;
 		}
 	}
-	
+	GiroBici += 5.0f;
+	if (GiroBici== 360.0f)
+	{
+		GiroBici = 0.0f;
+	}
 
 	if (play)
 	{
@@ -687,6 +823,9 @@ void animate(void)
 	if (animacionMaquinita)
 	{
 		animarMaquinita();
+	}
+	if (animacionDardos){
+		animarDardos();
 	}
 	// NPC 2
 	if (npc2anim)
@@ -1174,6 +1313,7 @@ void myData() {
 }
 
 int main() {
+	iniciarDardos();
 	// glfw: initialize and configure
 	glfwInit();
 
@@ -1181,7 +1321,7 @@ int main() {
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Pratica 6 2026-2", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Proyecto Final 2026-2", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -1444,6 +1584,7 @@ int main() {
 		//glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
 		glm::mat4 tmp_Bici = glm::mat4(1.0f);
+		glm::mat4 tmp_Maquinita = glm::mat4(1.0f);
 		// view/projection transformations
 		//glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000.0f);
 		projectionOp = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000.0f);
@@ -1646,26 +1787,37 @@ int main() {
 		Stand_Blanco.Draw(staticShader);
 
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f + 100.0f, 17.0f, Unidad_Z * 9.0f - 60.0f));//(4,9)
-		tmp=modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		tmp_Maquinita =modelOp = glm::rotate(modelOp, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
 		Maquinita.Draw(staticShader);
 
 		//Stand 3
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f - 300.0f, 17.0f, Unidad_Z * 9.0f - 50.0f));//(4,9)
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f - 315.0f, 17.0f, Unidad_Z * 9.0f - 50.0f));//(4,9)
 		staticShader.setMat4("model", modelOp);
 		Stand_Blanco.Draw(staticShader);
+		for (int i = 0; i < 6; i++)
+		{	
+			modelOp = glm::translate(glm::mat4(1.0f),posDardos[i]);
+			modelOp = glm::scale(modelOp, glm::vec3(2.0f));
+			staticShader.setMat4("model", modelOp);
+			if (i % 2 == 0)
+				DardoRojo.Draw(staticShader);
+			else
+				DardoAzul.Draw(staticShader);
+		}
+
 			// Dardos animados
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(Unidad_X * 4.0f - 300.0f, 104.0f, Unidad_Z * 9.0f - 100.0f));//(4,9)
 		tmp =modelOp = glm::scale(modelOp, glm::vec3(2.0f));
 		staticShader.setMat4("model", modelOp);
 		Tarjet.Draw(staticShader);
 			// Fin Dardos
-		modelOp = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));//(4,9)
+		modelOp = glm::translate(tmp, glm::vec3(10.0f, 10.0f, 0.0f));//(4,9)
 		//modelOp = glm::scale(modelOp, glm::vec3(2.0f));
 		staticShader.setMat4("model", modelOp);
 		DardoRojo.Draw(staticShader);
 
-		modelOp = glm::translate(tmp, glm::vec3(0.0f, 1.0f, 0.0f));//(4,9)
+		modelOp = glm::translate(tmp, glm::vec3(-10.0f, -10.0f, 0.0f));//(4,9)
 		//modelOp = glm::scale(modelOp, glm::vec3(2.0f));
 		staticShader.setMat4("model", modelOp);
 		DardoAzul.Draw(staticShader);
@@ -1678,7 +1830,7 @@ int main() {
 		myShader.setMat4("view", viewOp);
 
 		// Posición del plano
-		modelOp = glm::translate(tmp, glm::vec3( 40.142f, 125.0f, -31.495f));
+		modelOp = glm::translate(tmp_Maquinita, glm::vec3( 40.142f, 125.0f, -31.495f));
 		// Rotación
 		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelOp = glm::rotate(modelOp, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1782,40 +1934,35 @@ int main() {
 		Bici_Cuerpo.Draw(staticShader);
 
 		modelOp = glm::translate(tmp_Bici, glm::vec3(17.5f * EscalaBici, 15.55f * EscalaBici, -0.14f * EscalaBici));
-		modelOp = glm::rotate(modelOp, glm::radians(giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(-GiroBici), glm::vec3(0.0f, 0.0f, 1.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(EscalaBici));
 		staticShader.setMat4("model", modelOp);
 		Bici_Rueda.Draw(staticShader);
 
 		modelOp = glm::translate(tmp_Bici, glm::vec3(-4.993f * EscalaBici, 12.191f * EscalaBici, -3.345f * EscalaBici));
 		modelOp = glm::scale(modelOp, glm::vec3(EscalaBici));
-		tmp = modelOp = glm::rotate(modelOp, glm::radians(giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
+		tmp = modelOp = glm::rotate(modelOp, glm::radians(-GiroBici), glm::vec3(0.0f, 0.0f, 1.0f));
 		staticShader.setMat4("model", modelOp);
 		Bici_Base_Pedal_Der.Draw(staticShader);
 
 		modelOp = glm::translate(tmp, glm::vec3(-2.403f, -5.039f, -2.228f));
-		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		modelOp = glm::rotate(modelOp, glm::radians(giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(-GiroBici), glm::vec3(0.0f, 0.0f, 1.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(1.5f));
 		staticShader.setMat4("model", modelOp);
 		Bici_Pedal_Der.Draw(staticShader);
 
 		modelOp = glm::translate(tmp_Bici, glm::vec3(-4.993f * EscalaBici, 12.77f * EscalaBici, 3.343f * EscalaBici));
 		modelOp = glm::scale(modelOp, glm::vec3(EscalaBici));
-		tmp = modelOp = glm::rotate(modelOp, glm::radians(giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
+		tmp = modelOp = glm::rotate(modelOp, glm::radians(-GiroBici), glm::vec3(0.0f, 0.0f, 1.0f));
 		staticShader.setMat4("model", modelOp);
 		Bici_Base_Pedal_Izq.Draw(staticShader);
 
 		modelOp = glm::translate(tmp, glm::vec3(2.483f, 5.313f, 2.406f));
-		modelOp = glm::rotate(modelOp, glm::radians(-giroCabeza), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(-GiroBici), glm::vec3(0.0f, 0.0f, 1.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(1.5f));
 		staticShader.setMat4("model", modelOp);
 		Bici_Pedal_Izq.Draw(staticShader);
 
-		modelOp = glm::translate(tmp_Bici, glm::vec3(0.0f)); // translate it down so it's at the center of the scene
-		modelOp = glm::scale(modelOp, glm::vec3(0.5f));
-		staticShader.setMat4("model", modelOp);
-		llanta.Draw(staticShader);	//Izq trase
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Fin Bicicleta
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -1986,9 +2133,7 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
 		lightPosition.x--;
 
-	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
-		giroCabeza++;
-	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS){
 		// Posición
 		movBot_x = 0.0f;
 		movBot_y = 0.0f;
@@ -2007,9 +2152,16 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 		// Flags
 		animacionBot = false;
 	}
-
+	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
+		animacionMaquinita = false;
+		currentFrame = 0;
+	}
 	if (glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS)
-		giroBrazoDer++;
+	{
+		animacionDardos = false;
+
+		iniciarDardos();
+	}
 	if (glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS)
 	{
 		camera.Position = (glm::vec3(-1000.0f, 150.0f, 1000.0f));
@@ -2054,6 +2206,10 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
 		animacionMaquinita ^= true;
 	}	
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+	{
+		animacionDardos ^= true;
+	}
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
